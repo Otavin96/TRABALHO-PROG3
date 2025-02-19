@@ -1,0 +1,35 @@
+import { useState, useEffect } from 'react'
+import api from './service/api'
+import './App.css'
+
+function App() {
+  // const [pokemon, setPokemon] = useState([])
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await api.get('/pokemon/?offset=0&limit=50').then((res) => setPokemon(res.data.results))
+  //   }
+  
+  //   fetchData().catch(console.error);
+  // }, [])
+
+  // useEffect(() => {
+  //   const fetchUrl = async () => {
+  //     await api.get('/pokemon/1').then((res) => console.log(res.data))
+  //   }
+  
+  //   fetchUrl().catch(console.error);
+  // }, [])
+
+  return (
+    <>
+      {/* <ul>
+        {pokemon.map((item, index) => (
+          <li key={index}>{item.name}</li>
+        ))}
+      </ul> */}
+    </>
+  )
+}
+
+export default App
