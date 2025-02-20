@@ -1,38 +1,12 @@
-import { useState, useEffect } from "react"
-import api from "../service/api"
+import Card from "../components/card";
 
-const Home = () => {
-
-    const [pokemon, setPokemon] = useState([])
-
-    useEffect(() => {
-      api.get('/pokemon/1/').then((res) => setPokemon(res.data.sprites.front_default))
-    }, [])
-
-
+// eslint-disable-next-line react/prop-types
+const Home = ({ pokemon }) => {
   return (
-    <div className="grid grid-cols-4 gap-4">
-
-      <div className="rounded-md h-64 ml-2 mr-2 bg-red-400 shadow-xl">
-        <div className="header-card rounded-t-md bg-white">
-          <h2 className="font-bold text-center">Nome</h2>
-        </div>
-        <img src={pokemon} alt="" />
-      </div>
-      <div className="rounded-md ml-2 mr-2 ml-2 bg-white shadow-xl"><img src={pokemon} alt="" /></div>
-      <div className="rounded-md ml-2 mr-2 bg-white shadow-xl"><img src={pokemon} alt="" /></div>
-      <div className="rounded-md ml-2 mr-2 bg-white shadow-xl"><img src={pokemon} alt="" /></div>
-      <div className="rounded-md h-64 ml-2 mr-2 bg-white shadow-xl"><img src={pokemon} alt="" /></div>
-      <div className="rounded-md ml-2 mr-2 bg-white shadow-xl"><img src={pokemon} alt="" /></div>
-      <div className="rounded-md ml-2 mr-2 bg-white shadow-xl"><img src={pokemon} alt="" /></div>
-      <div className="rounded-md ml-2 mr-2 bg-white shadow-xl"><img src={pokemon} alt="" /></div>
-
-      {/* {pokemon.map((item, index) => (
-        
-      ))} */}
-      
+    <div className="grid grid-cols-4 gap-4 mt-6">
+      <Card pokemon={pokemon} />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
