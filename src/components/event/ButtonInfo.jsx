@@ -1,5 +1,5 @@
 const ButtonInfo = (props) => {
-  return <button onClick={() => props.event(props.id)}>{props.text}</button>;
+  return <button> {props.text}</button>;
 };
 
 export default ButtonInfo;

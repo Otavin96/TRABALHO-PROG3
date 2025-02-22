@@ -1,8 +1,8 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&display=swap');
 
-body {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+* {
   margin: 0;
   padding: 0;
-  background-color: #e0e0e094;
+  box-sizing: border-box;
+  font-family: 'Oxanium', cursive;
 }
