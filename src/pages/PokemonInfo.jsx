@@ -53,7 +53,7 @@ const PokemonInfo = () => {
       />
       {!loading && <p>Carregando!!</p>}
       <CuriosityPokemon id={id} />
-      <EvolutionPokemon id={id} />
+      <EvolutionPokemon id={id} color={color}/>
     </>
   );
 };
