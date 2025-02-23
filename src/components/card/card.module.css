@@ -1,0 +1,97 @@
+.pokedex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  margin: 100px auto;
+  width: 450px;
+  height: 600px;
+  background-image: url("../../assets/img/pokedexm.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+
+.pokemonName {
+  cursor: pointer;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.pokemonName a {
+  text-decoration: none;
+  color: #000;
+}
+
+.pokemonImage {
+  margin-top: 180px;
+  justify-content: center;
+  height: 115px;
+  width: 115px;
+}
+
+.search {
+  text-align: center;
+  margin-top: 20px;
+  order: 1;
+  height: 35px;
+  width: 60%;
+  outline: none;
+  border: 2px solid #333;
+  border-radius: 5px;
+  font-weight: 600;
+  color: #3a444d;
+  font-size: clamp(8px, 5vw, 1rem);
+  box-shadow:
+    -3px 4px 0 #888,
+    -5px 7px 0 #333;
+}
+
+.btnGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 70px;
+  margin-top: 20px;
+  width: 60%;
+  order: 2;
+}
+
+.btnPrev {
+  order: 1;
+  height: 30px;
+  width: 100px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  font-size: clamp(8px, 5vw, 1rem);
+  font-weight: 600;
+  color: white;
+  background-color: #444;
+  box-shadow:
+    -2px 3px 0 #222,
+    -4px 6px 0 #000;
+}
+
+.btnNext {
+  order: 2;
+  height: 30px;
+  width: 100px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  font-size: clamp(8px, 5vw, 1rem);
+  font-weight: 600;
+  color: white;
+  background-color: #444;
+  box-shadow:
+    -2px 3px 0 #222,
+    -4px 6px 0 #000;
+}
+
+.btnPrev:active {
+  box-shadow: inset -4px 4px 0 #222;
+  font-size: 0.9rem;
+}
+
+.btnNext:active {
+  box-shadow: inset -4px 4px 0 #222;
+  font-size: 0.9rem;
+}

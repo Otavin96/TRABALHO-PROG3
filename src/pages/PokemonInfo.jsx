@@ -1,52 +1,59 @@
 import { useState, useEffect } from "react";
-import { data, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import api from "../service/api";
-import ButtonLoading from "../components/event/buttonLoading";
+import CuriosityPokemon from "../components/info/CuriosityPokemon";
+import InfoPokemon from "../components/info/InfoPokemon";
+import EvolutionPokemon from "../components/info/EvolutionPokemon";
 
-// eslint-disable-next-line react/prop-types
 const PokemonInfo = () => {
-
   const { id } = useParams();
   const [infoPokemon, setInfoPokemon] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [pokemonImage, setPokemonImage] = useState(null);
+  const [typePokemon] = useState([]);
+  const [color, setColor] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const getType = (type = []) => {
+    type.map((item) => {
+      typePokemon.push(item.type.name);
+    });
+  };
 
   const getInfoPokemon = async (id) => {
-
     try {
       const response = await api.get(`/pokemon/${id}`);
+      const getMoreInfo = await api.get(`/pokemon-species/${id}`);
 
-      const data = response.data
-      setInfoPokemon(data)
-      setLoading(true)
-      
+      const data = response.data;
+
+      setColor(getMoreInfo.data.color.name);
+
+      getType(data.types);
+      setPokemonImage(
+        data["sprites"]["other"]["official-artwork"].front_default
+      );
+      setInfoPokemon(data);
+      setLoading(true);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
-  }
+  };
 
   useEffect(() => {
-    getInfoPokemon(id)
-  }, [])
-
-  console.log(infoPokemon)
+    getInfoPokemon(id);
+  }, [id]);
 
   return (
     <>
-    {!loading && <ButtonLoading />}
-    <div>
-        <h2>{infoPokemon.name}</h2>
-        <hr />
-        <img
-              width={250}
-              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${infoPokemon.id}.png`}
-              alt={`Pokemon ${infoPokemon.name}`}
-        />
-        <p>Experiência básica: {infoPokemon.base_experience}</p>
-        <p>Altura: {infoPokemon.height}</p>
-        <p>Peso: {infoPokemon.weight}</p>
-    </div>
-    
+      <InfoPokemon
+        infoPokemon={infoPokemon}
+        pokemonImage={pokemonImage}
+        typePokemon={typePokemon}
+        color={color}
+      />
+      {!loading && <p>Carregando!!</p>}
+      <CuriosityPokemon id={id} />
+      <EvolutionPokemon id={id} />
     </>
   );
 };

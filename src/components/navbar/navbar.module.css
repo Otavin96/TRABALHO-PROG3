@@ -1,0 +1,15 @@
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  background-color: rgba(136, 136, 136, 0.856);
+}
+
+.brand {
+  color: #fff;
+  font-size: 1.2em;
+  text-decoration: none;
+  font-weight: 700;
+}
