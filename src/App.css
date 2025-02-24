@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&display=swap");
 
+@font-face {
+  font-family: pokemon;
+  src: url("./assets/fonts/PokemonHollow.ttf");
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -10,6 +15,19 @@
 
 body {
   background-color: #e7e7e7;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+}
+
+header a {
+  color: #000;
+  text-decoration: none;
+  font-family: pokemon;
+  font-size: 3.2em;
+  cursor: pointer;
 }
 
 .container {

@@ -22,7 +22,9 @@ const PokemonInfo = () => {
   const getInfoPokemon = async (id) => {
     try {
       const response = await api.get(`/pokemon/${id}`);
-      const getMoreInfo = await api.get(`/pokemon-species/${id}`);
+      const getMoreInfo = await api.get(`/pokemon-species/${id}`, {
+        params: { lang: "pt" },
+      });
 
       const data = response.data;
 
@@ -45,15 +47,15 @@ const PokemonInfo = () => {
 
   return (
     <>
+      {!loading && <p>Carregando!!</p>}
       <InfoPokemon
         infoPokemon={infoPokemon}
         pokemonImage={pokemonImage}
         typePokemon={typePokemon}
         color={color}
       />
-      {!loading && <p>Carregando!!</p>}
-      <CuriosityPokemon id={id} />
-      <EvolutionPokemon id={id} color={color}/>
+      {/* <CuriosityPokemon id={id} /> */}
+      <EvolutionPokemon id={id} color={color} />
     </>
   );
 };

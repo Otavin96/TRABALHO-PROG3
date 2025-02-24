@@ -31,7 +31,7 @@ const InfoPokemon = ({ infoPokemon, pokemonImage, color, typePokemon }) => {
           </p>
         ) : (
           <p>
-            <strong>Tipo:</strong> {typePokemon.slice(0, 1)}
+            <strong>Tipo:</strong> {typePokemon.slice(0, 1)} /
             {typePokemon.slice(1, 2)}
           </p>
         )}
