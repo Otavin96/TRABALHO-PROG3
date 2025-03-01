@@ -15,11 +15,12 @@ const EvolutionPokemon = ({ id, color }) => {
     next: null,
   });
 
-  // 1. Buscar a URL da cadeia evolutiva a partir do id do Pokémon.
+
   useEffect(() => {
     async function fetchSpecies() {
       try {
         const response = await api.get(`/pokemon-species/${id}`);
+        console.log(response.data)
         setEvolutionChainUrl(response.data.evolution_chain.url);
       } catch (error) {
         console.error("Erro ao buscar espécie:", error);
@@ -30,14 +31,13 @@ const EvolutionPokemon = ({ id, color }) => {
     }
   }, [id]);
 
-  // 2. Buscar e extrair os nomes das evoluções usando a URL da cadeia evolutiva.
+  
   useEffect(() => {
     async function fetchEvolutionChain(url) {
       try {
         const response = await api.get(url);
         const chain = response.data.chain;
 
-        // Função recursiva para extrair os nomes em ordem
         const extractEvolutions = (chainNode, evolutions = []) => {
           evolutions.push(chainNode.species.name);
           if (chainNode.evolves_to && chainNode.evolves_to.length > 0) {
@@ -49,7 +49,7 @@ const EvolutionPokemon = ({ id, color }) => {
         };
 
         const evolutions = extractEvolutions(chain);
-        // Considerando que você quer exibir apenas três estágios: inicial, intermediário e final.
+  
         setEvolutionNames({
           prev: evolutions[0] || null,
           actual: evolutions[1] || null,
@@ -65,11 +65,11 @@ const EvolutionPokemon = ({ id, color }) => {
     }
   }, [evolutionChainUrl]);
 
-  // 3. Buscar os IDs dos Pokémon a partir dos nomes obtidos.
+  
   useEffect(() => {
     async function fetchPokemonId(pokemonName, position) {
       try {
-        // Se a PokéAPI espera nome ou id, estamos usando o nome obtido
+        
         const response = await api.get(`/pokemon-species/${pokemonName}`);
         setPokemonIds((prevIds) => ({
           ...prevIds,

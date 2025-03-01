@@ -1,67 +1,118 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import api from "../../service/api";
 import ButtonLoading from "../event/buttonLoading";
 import style from "../card/card.module.css";
 
 const Card = () => {
-  const [pokemon, setPokemon] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [pokemon, setPokemon] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(1);
   const [imagesPokemon, setImagesPokemon] = useState(null);
+  const [regions, setRegions] = useState([]);
+  const [selectedRegion, setSelectedRegion] = useState("");
+  const [namesPokemon, setNamesPokemon] = useState([]);
 
-  const handleNext = () => {
-    setCount(count + 1);
-  };
+  const searchTimeout = useRef(null);
 
-  const handlePrev = () => {
-    setCount(count - 1);
-  };
+  const handleNext = () => setCount((prev) => prev + 1);
+  const handlePrev = () => setCount((prev) => (prev > 1 ? prev - 1 : prev));
 
   const getPokemons = async (count) => {
+    if (count <= 0) return;
+
+    setIsLoading(true);
     try {
       const response = await api.get(`/pokemon/${count}`);
-
       const data = response.data;
-      setImagesPokemon(
-        data["sprites"]["versions"]["generation-v"]["black-white"]["animated"]
-          .front_default
-      );
       setPokemon(data);
-      setCount(data.id);
-      setIsLoading(true);
+      setImagesPokemon(
+        data.sprites.versions["generation-v"]["black-white"].animated.front_default
+      );
     } catch (error) {
-      console.log(error);
+      console.error("Erro ao buscar Pokémon:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const changetSearch = (e) => {
-    getPokemons(e.target.value);
-  };
+  useEffect(() => {
+    const fetchRegions = async () => {
+      try {
+        const response = await api.get(`region/`);
+        setRegions(response.data.results);
+      } catch (error) {
+        console.error("Erro ao buscar regiões!", error);
+      }
+    };
+    fetchRegions();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedRegion) return;
+
+    const fetchRegionPokemons = async () => {
+      try {
+        const response = await api.get(`/region/${selectedRegion}`);
+        const generation = response.data.main_generation.name;
+        const res = await api.get(`/generation/${generation}`);
+        setNamesPokemon(res.data.pokemon_species);
+        console.log(namesPokemon)
+      } catch (error) {
+        console.error("Erro ao buscar Pokémon da região:", error);
+      }
+    };
+
+    fetchRegionPokemons();
+  }, [selectedRegion]);
 
   useEffect(() => {
     getPokemons(count);
   }, [count]);
 
+  const handleSearch = (e) => {
+    if (searchTimeout.current) {
+      clearTimeout(searchTimeout.current);
+    }
+    searchTimeout.current = setTimeout(() => {
+      getPokemons(e.target.value.toLowerCase());
+    }, 500);
+  };
+
   return (
     <>
+      <div>
+        <label>
+          Escolha uma região{" "}
+          <select value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)}>
+            <option value="">Selecione</option>
+            {regions.map((region, index) => (
+              <option key={index} value={region.name}>
+                {region.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
       <div className={style.pokedex}>
-        {count <= 0 && <h3> Pokemon não encontrado!! </h3>}
+        {count <= 0 && <h3>Pokémon não encontrado!</h3>}
 
-        <img
-          className={style.pokemonImage}
-          src={imagesPokemon}
-          alt={`Pokemon ${pokemon.name}`}
-        />
-
-        <div className={style.pokemonName}>
-          <h2>
-            <Link to={`/pokemon-info/${count}`}>{pokemon.name}</Link>
-          </h2>
-        </div>
+        {isLoading ? (
+          <ButtonLoading />
+        ) : (
+          <>
+            <img className={style.pokemonImage} src={imagesPokemon} alt={`Pokemon ${pokemon.name}`} />
+            <div className={style.pokemonName}>
+              <h2>
+                <Link to={`/pokemon-info/${count}`}>{pokemon.name}</Link>
+              </h2>
+            </div>
+          </>
+        )}
 
         <input
-          onChange={changetSearch}
+          onChange={handleSearch}
           className={style.search}
           type="text"
           placeholder="Pesquisar"
@@ -72,12 +123,10 @@ const Card = () => {
             Anterior
           </button>
           <button className={style.btnNext} onClick={handleNext}>
-            Proximo
+            Próximo
           </button>
         </div>
       </div>
-
-      {!isLoading && <ButtonLoading />}
     </>
   );
 };
